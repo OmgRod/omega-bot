@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: omega-bot-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    networks:
+      - bot-network
+
+  app:
+    build: .
+    command: node build/main.js
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+    ports:
+      - "3000:3000"  # Example: Adjust port as needed for your app
+    depends_on:
+      - postgres  # Ensures postgres is started before app
+    networks:
+      - bot-network
+
+networks:
+  bot-network:
+    driver: bridge
