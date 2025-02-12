@@ -8,9 +8,9 @@ By using the Bot, the User agrees to the terms of this Agreement. If the User do
 
 2. Database Access: The Bot Owner has access to the database used to support the Bot's functionality. However, any important or private information stored is encrypted to ensure user privacy and security.
 
-3. Use of Data: The Bot does not analyze, sell, or share any data with third parties. Any information processed is strictly used to enhance the user experience within the scope of Omega Bot’s functionality.
+3. Use of Data: The Bot itself does not analyze, store, sell, or share any personal user data. Any information processed is strictly used to provide and enhance the Bot’s functionality.
 
-4. Third-Party Services: The Bot may rely on third-party services (such as Ollama) for specific functionalities. The Bot Owner is not responsible for how these services handle user data.
+4. Third-Party Services: While the Bot does not collect user data, it may rely on third-party services (such as Ollama) for certain features. These services operate independently and may have their own data processing policies. The Bot Owner does not control or take responsibility for how third-party services handle user data.
 
 5. Security Measures: While the Bot Owner takes reasonable precautions to safeguard data, users should be aware that no system is completely secure. The encryption of sensitive data is implemented to reduce risk.
 
