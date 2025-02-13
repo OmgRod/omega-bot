@@ -14,14 +14,23 @@ export class ChatListener {
             if (message.mentions.has(client.user.id, { ignoreEveryone: true })) {
                 if (!(message.channel instanceof TextChannel)) return;
 
-                const thinkingMessage = await message.channel.send(`${getEmojiString("hourglass")} Thinking...`);
+                // Send a "thinking" reply instead of a separate message
+                const thinkingMessage = await message.reply(`${getEmojiString("hourglass")} Thinking...`);
                 console.log("👤 User: " + message.content);
 
                 // Unique key per user per channel
                 const userKey = `${message.channel.id}-${message.author.id}`;
-                const userHistory = userMessageHistory.get(userKey) || [];
+                let userHistory = userMessageHistory.get(userKey) || [];
 
-                // Store the new message
+                // If it's the first message, add a system message
+                if (userHistory.length === 0) {
+                    userHistory.push({
+                        role: "system",
+                        content: "You are Omega Bot, a friendly AI assistant for Discord. Always refer to yourself as Omega Bot if your name needs to be mentioned. Be helpful, informative, and engaging, but feel free to change your personality when needed to fit in."
+                    });
+                }
+
+                // Store the new user message (removing the bot mention)
                 userHistory.push({ role: "user", content: message.content.replace(new RegExp(`<@!?${client.user.id}>`, "g"), "").trim() });
 
                 userMessageHistory.set(userKey, userHistory);
@@ -33,11 +42,12 @@ export class ChatListener {
                     });
 
                     let aiResponse = response?.message?.content?.trim() || "I couldn't generate a response. Please try again!";
-                    console.log("🤖 AI: " + aiResponse);
+                    console.log("🤖 Omega Bot: " + aiResponse);
 
                     // Store AI's response
                     userHistory.push({ role: "assistant", content: aiResponse });
 
+                    // Edit the original reply instead of sending a new message
                     await thinkingMessage.edit(aiResponse);
                 } catch (error) {
                     console.error("❌ Error interacting with Ollama:", error);
