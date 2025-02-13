@@ -1,44 +1,21 @@
 <div>
   <p align="center">
     <a href="https://discordx.js.org" target="_blank" rel="nofollow">
-      <img src="https://discordx.js.org/discordx.svg" width="546" />
+      <h1>Ω Omega Bot</h1>
     </a>
   </p>
-  <p align="center">
-    <a href="https://discordx.js.org/discord"
-      ><img
-        src="https://img.shields.io/discord/874802018361950248?color=5865F2&logo=discord&logoColor=white"
-        alt="Discord server"
-    /></a>
-    <a href="https://www.npmjs.com/package/discordx"
-      ><img
-        src="https://img.shields.io/npm/v/discordx.svg?maxAge=3600"
-        alt="NPM version"
-    /></a>
-    <a href="https://www.npmjs.com/package/discordx"
-      ><img
-        src="https://img.shields.io/npm/dt/discordx.svg?maxAge=3600"
-        alt="NPM downloads"
-    /></a>
-    <a href="https://github.com/discordx-ts/discordx/actions"
-      ><img
-        src="https://github.com/discordx-ts/discordx/workflows/Build/badge.svg"
-        alt="Build status"
-    /></a>
-    <a href="https://www.paypal.me/vijayxmeena"
-      ><img
-        src="https://img.shields.io/badge/donate-paypal-F96854.svg"
-        alt="paypal"
-    /></a>
-  </p>
-  <p align="center">
-    <b> Create a discord bot with TypeScript and Decorators! </b>
-  </p>
-</div>
 
 # 📖 Introduction
 
-A starter template equipped with several interaction commands and one event.
+Omega Bot is a Discord bot that helps manage everyday tasks!
+
+# Getting Started
+
+1. Create a copy of `example.env` and rename it to `.env`
+2. Go to the [Discord Developer Portal](https://discord.com/developers) and create a bot if you haven't yet
+3. Set `BOT_TOKEN` and `CLIENT_ID` to their corresponding values.
+4. For the `DB_USER`, `DB_PASSWORD`, `DB_NAME` and, `DB_HOST` values, feel free to select any values (`DB_PORT` must be `5432` but you can change it if you change the ports in [`docker-compose.yml`](https://github.com/OmgRod/omega-bot/blob/main/docker-compose.yml))
+5. If you don't want Ollama (chatbot) in your bot, set `OLLAMA_ENABLED` to `0`
 
 # 🏗 Development
 
