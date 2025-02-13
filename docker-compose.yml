@@ -15,17 +15,17 @@ services:
     networks:
       - bot-network
 
-  app:
-    build: .
-    command: node build/main.js
-    environment:
-      - BOT_TOKEN=${BOT_TOKEN}
-    ports:
-      - "3000:3000"  # Example: Adjust port as needed for your app
-    depends_on:
-      - postgres  # Ensures postgres is started before app
-    networks:
-      - bot-network
+  # app:
+  #   build: .
+  #   command: node build/main.js
+  #   environment:
+  #     - BOT_TOKEN=${BOT_TOKEN}
+  #   ports:
+  #     - "3000:3000"  # Example: Adjust port as needed for your app
+  #   depends_on:
+  #     - postgres  # Ensures postgres is started before app
+  #   networks:
+  #     - bot-network
 
 networks:
   bot-network:
