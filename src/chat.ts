@@ -16,7 +16,7 @@ export class ChatListener {
 
                 // Send a "thinking" reply instead of a separate message
                 const thinkingMessage = await message.reply(`${getEmojiString("hourglass")} Thinking...`);
-                console.log("👤 User: " + message.content);
+                // console.log("👤 User: " + message.content);
 
                 // Unique key per user per channel
                 const userKey = `${message.channel.id}-${message.author.id}`;
@@ -42,7 +42,7 @@ export class ChatListener {
                     });
 
                     let aiResponse = response?.message?.content?.trim() || "I couldn't generate a response. Please try again!";
-                    console.log("🤖 Omega Bot: " + aiResponse);
+                    // console.log("🤖 Omega Bot: " + aiResponse);
 
                     // Store AI's response
                     userHistory.push({ role: "assistant", content: aiResponse });
