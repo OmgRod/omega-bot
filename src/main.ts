@@ -3,8 +3,8 @@ import type { Interaction, Message } from "discord.js";
 import { ActivityType, IntentsBitField } from "discord.js";
 import { Client } from "discordx";
 import { ChatListener } from "./chat.js";
-import express from "express"; // Import Express
-import cors from "cors"; // Import CORS for frontend access
+import express, { Request, Response } from "express"; // Import Express types
+import cors from "cors"; // Import CORS
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -27,18 +27,21 @@ const app = express();
 app.use(cors()); // Allow frontend access
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Discord bot API is running!");
 });
 
-// Endpoint to check bot status
-app.get("/bot-status", (req, res) => {
+app.get("/bot-status", (req: Request, res: Response) => {
   res.json({ online: bot.isReady(), username: bot.user?.username });
 });
 
-// Endpoint to get list of commands
-app.get("/commands", (req, res) => {
-  res.json(bot.application?.commands.cache.map(cmd => ({ name: cmd.name, description: cmd.description })));
+app.get("/commands", (req: Request, res: Response) => {
+  res.json(
+    bot.application?.commands.cache.map((cmd) => ({
+      name: cmd.name,
+      description: cmd.description,
+    }))
+  );
 });
 
 // Start Express server
