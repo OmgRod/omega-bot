@@ -45,7 +45,7 @@ export class TimerCommand {
     const time = ms(timeArg) as number;
     if (typeof time !== 'number' || isNaN(time)) {
       await interaction.reply({
-        content: `${getEmojiString('xmarksolid')} Invalid time format. Please use a valid time format like \`5s\`, \`1m\`, \`2h\`, etc.`,
+        content: `${getEmojiString('cross')} Invalid time format. Please use a valid time format like \`5s\`, \`1m\`, \`2h\`, etc.`,
         flags: 64,
       });
       return;
@@ -62,7 +62,7 @@ export class TimerCommand {
 
       // Send an ephemeral reply confirming the reminder
       await interaction.reply({
-        content: `${getEmojiString('checksolid')} Reminder set for ${userToRemind.tag} (ID: ${id}): I will remind you in ${ms(time, { long: true })} to "${reminderText}"`,
+        content: `${getEmojiString('check')} Reminder set for ${userToRemind.tag} (ID: ${id}): I will remind you in ${ms(time, { long: true })} to "${reminderText}"`,
         flags: 64,
       });
 
@@ -84,7 +84,7 @@ export class TimerCommand {
     } catch (error) {
       console.error('Error setting reminder:', error);
       await interaction.reply({
-        content: `${getEmojiString('xmarksolid')} There was an error setting your reminder. Please try again later.`,
+        content: `${getEmojiString('cross')} There was an error setting your reminder. Please try again later.`,
         flags: 64,
       });
     }
@@ -101,14 +101,14 @@ export class TimerCommand {
     const res = await pgClient.query('SELECT * FROM timers WHERE id = $1 AND (created_by = $2 OR remind_for = $2)', [id, interaction.user.id]);
 
     if (res.rows.length === 0) {
-      await interaction.reply({ content: `${getEmojiString('xmarksolid')} You do not have permission to remove this timer or it does not exist.`, flags: 64 });
+      await interaction.reply({ content: `${getEmojiString('cross')} You do not have permission to remove this timer or it does not exist.`, flags: 64 });
       return;
     }
 
     // Remove the timer from the database
     await pgClient.query('DELETE FROM timers WHERE id = $1', [id]);
 
-    await interaction.reply({ content: `${getEmojiString('checksolid')} Timer with ID ${id} has been removed.`, flags: 64 });
+    await interaction.reply({ content: `${getEmojiString('check')} Timer with ID ${id} has been removed.`, flags: 64 });
   }
 
   // Rename a timer
@@ -124,14 +124,14 @@ export class TimerCommand {
     const res = await pgClient.query('SELECT * FROM timers WHERE id = $1 AND created_by = $2', [id, interaction.user.id]);
 
     if (res.rows.length === 0) {
-      await interaction.reply({ content: `${getEmojiString('xmarksolid')} You do not have permission to rename this timer or it does not exist.`, flags: 64 });
+      await interaction.reply({ content: `${getEmojiString('cross')} You do not have permission to rename this timer or it does not exist.`, flags: 64 });
       return;
     }
 
     // Update the timer's text in the database
     await pgClient.query('UPDATE timers SET text = $1 WHERE id = $2', [newText, id]);
 
-    await interaction.reply({ content: `${getEmojiString('checksolid')} Timer with ID ${id} has been renamed to: "${newText}".`, flags: 64 });
+    await interaction.reply({ content: `${getEmojiString('check')} Timer with ID ${id} has been renamed to: "${newText}".`, flags: 64 });
   }
 
   // List all active timers

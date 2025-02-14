@@ -51,7 +51,7 @@ export class ChatListener {
                     await thinkingMessage.edit(aiResponse);
                 } catch (error) {
                     console.error("❌ Error interacting with Ollama:", error);
-                    await thinkingMessage.edit(`${getEmojiString("xmarksolid")} **Error:** Sorry, I couldn't process your message right now.`);
+                    await thinkingMessage.edit(`${getEmojiString("cross")} **Error:** Sorry, I couldn't process your message right now.`);
                 }
             }
         });
