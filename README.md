@@ -11,7 +11,7 @@ Omega Bot is a Discord bot that helps manage everyday tasks!
 
 # Getting Started
 
-## `.env` File
+## Environment Variables
 
 1. Create a copy of `example.env` and rename it to `.env`
 2. Go to the [Discord Developer Portal](https://discord.com/developers) and create a bot if you haven't yet

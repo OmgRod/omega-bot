@@ -1,17 +1,15 @@
 import { dirname, importx } from "@discordx/importer";
 import type { Interaction, Message } from "discord.js";
-import { IntentsBitField } from "discord.js";
+import { ActivityType, IntentsBitField } from "discord.js";
 import { Client } from "discordx";
 import { ChatListener } from "./chat.js";
-import * as dotenv from 'dotenv';
+import express from "express"; // Import Express
+import cors from "cors"; // Import CORS for frontend access
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
 export const bot = new Client({
-  // To use only guild command
-  // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
-
-  // Discord intents
   intents: [
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMembers,
@@ -20,23 +18,45 @@ export const bot = new Client({
     IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.MessageContent,
   ],
-
-  // Debug logs are disabled in silent mode
   silent: false,
-
-  // Configuration for @SimpleCommand
-  simpleCommand: {
-    prefix: "!",
-  },
+  simpleCommand: { prefix: "!" },
 });
+
+// Express server setup
+const app = express();
+app.use(cors()); // Allow frontend access
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Discord bot API is running!");
+});
+
+// Endpoint to check bot status
+app.get("/bot-status", (req, res) => {
+  res.json({ online: bot.isReady(), username: bot.user?.username });
+});
+
+// Endpoint to get list of commands
+app.get("/commands", (req, res) => {
+  res.json(bot.application?.commands.cache.map(cmd => ({ name: cmd.name, description: cmd.description })));
+});
+
+// Start Express server
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
 
 bot.once("ready", () => {
   void bot.initApplicationCommands();
-
   console.log("Bot started");
+
   if (process.env.OLLAMA_ENABLED == "1") {
     new ChatListener(bot);
   }
+
+  bot.user?.setPresence({
+    activities: [{ name: "/help", type: ActivityType.Watching }],
+    status: "idle",
+  });
 });
 
 bot.on("interactionCreate", (interaction: Interaction) => {
@@ -48,19 +68,12 @@ bot.on("messageCreate", (message: Message) => {
 });
 
 async function run() {
-  // The following syntax should be used in the commonjs environment
-  //
-  // await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
-
-  // The following syntax should be used in the ECMAScript environment
   await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`);
 
-  // Let's start the bot
   if (!process.env.BOT_TOKEN) {
     throw Error("Could not find BOT_TOKEN in your environment");
   }
 
-  // Log in with your bot token
   await bot.login(process.env.BOT_TOKEN);
 }
 
