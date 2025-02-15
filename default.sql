@@ -7,3 +7,12 @@ CREATE TABLE timers (
     time BIGINT NOT NULL,        -- Unix timestamp (milliseconds) for when the reminder should trigger
     completed BOOLEAN DEFAULT FALSE  -- Whether the timer has been completed
 );
+
+CREATE TABLE warnings (
+  id UUID PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  moderator_id TEXT NOT NULL,
+  guild_id TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  date TIMESTAMP DEFAULT NOW()
+);
