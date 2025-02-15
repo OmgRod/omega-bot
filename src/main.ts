@@ -19,7 +19,6 @@ export const bot = new Client({
     IntentsBitField.Flags.MessageContent,
   ],
   silent: false,
-  simpleCommand: { prefix: "!" },
 });
 
 // Express server setup
@@ -35,13 +34,24 @@ app.get("/bot-status", (req: Request, res: Response) => {
   res.json({ online: bot.isReady(), username: bot.user?.username });
 });
 
-app.get("/commands", (req: Request, res: Response) => {
-  res.json(
-    bot.application?.commands.cache.map((cmd) => ({
-      name: cmd.name,
-      description: cmd.description,
-    }))
-  );
+app.get("/commands", async (req: Request, res: Response) => {
+  if (!bot.application) {
+    return res.status(500).json({ error: "Bot application is not initialized" });
+  }
+
+  await bot.application.commands.fetch(); // Ensure commands are fetched
+
+  const commands = bot.application.commands.cache.map((cmd) => ({
+    name: cmd.name,
+    description: cmd.description,
+    options: cmd.options?.map(opt => ({
+      name: opt.name,
+      type: opt.type,
+      description: opt.description
+    })) || [],
+  }));
+
+  res.json(commands);
 });
 
 // Start Express server
