@@ -6,7 +6,7 @@ const emojiDictionary: Record<string, string> = {
     hammer: '1340394089300099235',
     info: '1340394057557610506',
     warning: '1340394129380741200',
-    calendar: '1340400889550209096',
+    calendar: '1340407058817613987',
   };
   
   function getEmojiString(name: string): string {
