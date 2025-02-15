@@ -15,7 +15,10 @@ export class ChatListener {
                 if (!(message.channel instanceof TextChannel)) return;
 
                 // Send a "thinking" reply instead of a separate message
-                const thinkingMessage = await message.reply(`${getEmojiString("hourglass")} Thinking...`);
+                const thinkingMessage = await message.reply({
+                    content: `${getEmojiString("hourglass")} Thinking...`,
+                    allowedMentions: { users: [message.author.id] }
+                });
                 // console.log("👤 User: " + message.content);
 
                 // Unique key per user per channel
