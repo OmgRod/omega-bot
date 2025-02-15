@@ -1,6 +1,6 @@
 import { dirname, importx } from "@discordx/importer";
 import type { Interaction, Message } from "discord.js";
-import { ActivityType, IntentsBitField } from "discord.js";
+import { ApplicationCommandOptionType, ActivityType, IntentsBitField } from "discord.js";
 import { Client } from "discordx";
 import { ChatListener } from "./chat.js";
 import express, { Request, Response } from "express"; // Import Express types
@@ -41,15 +41,20 @@ app.get("/commands", async (req: Request, res: Response) => {
 
   await bot.application.commands.fetch(); // Ensure commands are fetched
 
-  const commands = bot.application.commands.cache.map((cmd) => ({
-    name: cmd.name,
-    description: cmd.description,
-    options: cmd.options?.map(opt => ({
-      name: opt.name,
-      type: opt.type,
-      description: opt.description
-    })) || [],
-  }));
+  const commands = bot.application.commands.cache.map((cmd) => {
+    // Filter out SlashOptions and include only commands and subcommand groups
+    const filteredOptions = cmd.options?.filter(
+      (option) =>
+        option.type === ApplicationCommandOptionType.Subcommand ||
+        option.type === ApplicationCommandOptionType.SubcommandGroup
+    ) || [];
+
+    return {
+      name: cmd.name,
+      description: cmd.description,
+      options: filteredOptions, // Include only subcommands and subcommand groups
+    };
+  });
 
   res.json(commands);
 });
