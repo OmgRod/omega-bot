@@ -4,12 +4,12 @@ import { Discord, Slash, SlashOption } from "discordx";
 import { getEmojiString } from "../../modules/emojis.js";
 
 @Discord()
-export class KickCommand {
+export class BanCommand {
 
-  @Slash({ description: "Kick a user from the server" })
-  async kick(
+  @Slash({ description: "Ban a user from the server" })
+  async ban(
     @SlashOption({
-      description: "User to kick",
+      description: "User to ban",
       name: "user",
       required: true,
       type: ApplicationCommandOptionType.User,
@@ -21,10 +21,10 @@ export class KickCommand {
     // Debug: Log the user object to verify it's being passed correctly
     console.log(user); 
 
-    // Check if the user has permission to kick members
-    if (!interaction.member?.permissions.has(PermissionsBitField.Flags.KickMembers)) {
+    // Check if the user has permission to ban members
+    if (!interaction.member?.permissions.has(PermissionsBitField.Flags.BanMembers)) {
       await interaction.reply({
-        content: `${getEmojiString('cross')} You do not have permission to kick members.`,
+        content: `${getEmojiString('cross')} You do not have permission to ban members.`,
         flags: 64, // Makes the message ephemeral
       });
       return;
@@ -42,30 +42,30 @@ export class KickCommand {
       return;
     }
 
-    // Check if the bot has permission to kick the user
-    if (!interaction.guild?.members?.me?.permissions.has(PermissionsBitField.Flags.KickMembers)) {
+    // Check if the bot has permission to ban the user
+    if (!interaction.guild?.members?.me?.permissions.has(PermissionsBitField.Flags.BanMembers)) {
       await interaction.reply({
-        content: `${getEmojiString('cross')} I do not have permission to kick members.`,
+        content: `${getEmojiString('cross')} I do not have permission to ban members.`,
         flags: 64,
       });
       return;
     }
 
-    // Proceed to kick the user
+    // Proceed to ban the user
     try {
-      await member.kick("Kicked by bot command");
+      await member.ban({ reason: "Banned by bot command" });
 
       // Check if user.tag is available or fall back to user.username
       const userTag = user.tag || user.username;
 
       await interaction.reply({
-        content: `${getEmojiString('check')} User has been kicked from the server.`, // switch to ${userTag} later
+        content: `${getEmojiString('check')} ${userTag} has been banned from the server.`,
         flags: 64,
       });
     } catch (error) {
-      console.error("Error kicking user:", error);
+      console.error("Error banning user:", error);
       await interaction.reply({
-        content: `${getEmojiString('cross')} An error occurred while trying to kick the user.`,
+        content: `${getEmojiString('cross')} An error occurred while trying to ban the user.`,
         flags: 64,
       });
     }
