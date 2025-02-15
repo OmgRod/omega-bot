@@ -1,5 +1,5 @@
-import { CommandInteraction, User, PermissionsBitField } from "discord.js";
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, MessageFlags, CommandInteraction, User, PermissionsBitField } from "discord.js";
+import {  } from "discord.js";
 import { Discord, Slash, SlashOption, SlashGroup } from "discordx";
 import { v4 as uuidv4 } from "uuid";
 import { getEmojiString } from "../../modules/emojis.js";
@@ -31,13 +31,13 @@ export class WarnCommand {
 
     interaction: CommandInteraction
   ): Promise<void> {
-    console.log(`Warning user: ${user.tag} | Message: ${message}`);
+    console.log(`Warning user: ${user.username} | Message: ${message}`);
 
     // Check permission
     if (!interaction.member?.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
       await interaction.reply({
         content: `${getEmojiString('cross')} You do not have permission to warn members.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
       return;
     }
@@ -55,18 +55,18 @@ export class WarnCommand {
       try {
         await user.send(`${getEmojiString('warning')} **You have been warned in ${interaction.guild?.name}:** ${message}`);
       } catch {
-        console.warn(`Could not send DM to ${user.tag}`);
+        console.warn(`Could not send DM to ${user.username}`);
       }
 
       await interaction.reply({
-        content: `${getEmojiString('check')} Successfully warned **${user.tag}** (ID: ${warnId}).`,
-        flags: 64,
+        content: `${getEmojiString('check')} Successfully warned **<@${user.id}>** (ID: ${warnId}).`,
+        flags: MessageFlags.Ephemeral,
       });
     } catch (error) {
       console.error("Error issuing warning:", error);
       await interaction.reply({
         content: `${getEmojiString('cross')} There was an error issuing the warning.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
     }
   }
@@ -93,8 +93,8 @@ export class WarnCommand {
 
       if (res.rows.length === 0) {
         await interaction.reply({
-          content: `${getEmojiString('check')} **${user.tag}** has no warnings.`,
-          flags: 64,
+          content: `${getEmojiString('check')} **<@${user.id}>** has no warnings.`,
+          flags: MessageFlags.Ephemeral,
         });
         return;
       }
@@ -102,14 +102,14 @@ export class WarnCommand {
       const warnList = res.rows.map(w => `**ID:** ${w.id}\n${getEmojiString("calendar")} **Date:** ${w.date.toISOString().split("T")[0]}\n${getEmojiString("warning")} **Reason:** ${w.reason}`).join("\n\n");
 
       await interaction.reply({
-        content: `Warnings for **${user.tag}**:\n\n${warnList}`,
-        flags: 64,
+        content: `Warnings for **<@${user.id}>**:\n\n${warnList}`,
+        flags: MessageFlags.Ephemeral,
       });
     } catch (error) {
       console.error("Error fetching warnings:", error);
       await interaction.reply({
         content: `${getEmojiString('cross')} Could not retrieve warnings.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
     }
   }
@@ -139,7 +139,7 @@ export class WarnCommand {
     if (!interaction.member?.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
       await interaction.reply({
         content: `${getEmojiString('cross')} You do not have permission to remove warnings.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
       return;
     }
@@ -152,21 +152,21 @@ export class WarnCommand {
 
       if (res.rowCount === 0) {
         await interaction.reply({
-          content: `${getEmojiString('cross')} Warning ID **${warnId}** not found for ${user.tag}.`,
-          flags: 64,
+          content: `${getEmojiString('cross')} Warning ID **${warnId}** not found for <@${user.id}>.`,
+          flags: MessageFlags.Ephemeral,
         });
         return;
       }
 
       await interaction.reply({
-        content: `${getEmojiString('check')} Removed warning **${warnId}** for ${user.tag}.`,
-        flags: 64,
+        content: `${getEmojiString('check')} Removed warning **${warnId}** for <@${user.id}>.`,
+        flags: MessageFlags.Ephemeral,
       });
     } catch (error) {
       console.error("Error removing warning:", error);
       await interaction.reply({
         content: `${getEmojiString('cross')} Could not remove warning.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
     }
   }

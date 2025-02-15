@@ -1,5 +1,4 @@
-import { CommandInteraction, GuildMember, PermissionsBitField, User } from "discord.js";
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction, GuildMember, MessageFlags, PermissionsBitField, User } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 import { getEmojiString } from "../../modules/emojis.js";
 
@@ -25,7 +24,7 @@ export class BanCommand {
     if (!interaction.member?.permissions.has(PermissionsBitField.Flags.BanMembers)) {
       await interaction.reply({
         content: `${getEmojiString('cross')} You do not have permission to ban members.`,
-        flags: 64, // Makes the message ephemeral
+        flags: MessageFlags.Ephemeral, // Makes the message ephemeral
       });
       return;
     }
@@ -37,7 +36,7 @@ export class BanCommand {
     if (!member) {
       await interaction.reply({
         content: `${getEmojiString('cross')} User not found or is not in the server.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
       return;
     }
@@ -46,7 +45,7 @@ export class BanCommand {
     if (!interaction.guild?.members?.me?.permissions.has(PermissionsBitField.Flags.BanMembers)) {
       await interaction.reply({
         content: `${getEmojiString('cross')} I do not have permission to ban members.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
       return;
     }
@@ -55,18 +54,15 @@ export class BanCommand {
     try {
       await member.ban({ reason: "Banned by bot command" });
 
-      // Check if user.tag is available or fall back to user.username
-      const userTag = user.tag || user.username;
-
       await interaction.reply({
-        content: `${getEmojiString('check')} ${userTag} has been banned from the server.`,
-        flags: 64,
+        content: `${getEmojiString('check')} <@${user.id}> has been banned from the server.`,
+        flags: MessageFlags.Ephemeral,
       });
     } catch (error) {
       console.error("Error banning user:", error);
       await interaction.reply({
         content: `${getEmojiString('cross')} An error occurred while trying to ban the user.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
     }
   }

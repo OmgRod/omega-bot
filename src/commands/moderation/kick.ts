@@ -1,5 +1,4 @@
-import { CommandInteraction, GuildMember, PermissionsBitField, User } from "discord.js";
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction, GuildMember, PermissionsBitField, User, MessageFlags } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 import { getEmojiString } from "../../modules/emojis.js";
 
@@ -25,7 +24,7 @@ export class KickCommand {
     if (!interaction.member?.permissions.has(PermissionsBitField.Flags.KickMembers)) {
       await interaction.reply({
         content: `${getEmojiString('cross')} You do not have permission to kick members.`,
-        flags: 64, // Makes the message ephemeral
+        flags: MessageFlags.Ephemeral, // Makes the message ephemeral
       });
       return;
     }
@@ -37,7 +36,7 @@ export class KickCommand {
     if (!member) {
       await interaction.reply({
         content: `${getEmojiString('cross')} User not found or is not in the server.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
       return;
     }
@@ -46,7 +45,7 @@ export class KickCommand {
     if (!interaction.guild?.members?.me?.permissions.has(PermissionsBitField.Flags.KickMembers)) {
       await interaction.reply({
         content: `${getEmojiString('cross')} I do not have permission to kick members.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
       return;
     }
@@ -55,18 +54,17 @@ export class KickCommand {
     try {
       await member.kick("Kicked by bot command");
 
-      // Check if user.tag is available or fall back to user.username
-      const userTag = user.tag || user.username;
+      // Check if user.username is available or fall back to user.username
 
       await interaction.reply({
-        content: `${getEmojiString('check')} User has been kicked from the server.`, // switch to ${userTag} later
-        flags: 64,
+        content: `${getEmojiString('check')} <@${user.id}> has been kicked from the server.`,
+        flags: MessageFlags.Ephemeral,
       });
     } catch (error) {
       console.error("Error kicking user:", error);
       await interaction.reply({
         content: `${getEmojiString('cross')} An error occurred while trying to kick the user.`,
-        flags: 64,
+        flags: MessageFlags.Ephemeral,
       });
     }
   }
