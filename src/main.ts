@@ -41,18 +41,26 @@ app.get("/commands", async (req: Request, res: Response) => {
 
   await bot.application.commands.fetch(); // Ensure commands are fetched
 
+  // Check if the 'showOptions' query parameter is present
+  const showOptions = req.query.showOptions === "1";
+
   const commands = bot.application.commands.cache.map((cmd) => {
-    // Filter out SlashOptions and include only commands and subcommand groups
-    const filteredOptions = cmd.options?.filter(
+    // Filter out SlashOptions and include only commands and subcommand groups by default
+    let filteredOptions = cmd.options?.filter(
       (option) =>
         option.type === ApplicationCommandOptionType.Subcommand ||
         option.type === ApplicationCommandOptionType.SubcommandGroup
     ) || [];
 
+    // If showOptions=1, include all options (including SlashOptions)
+    if (showOptions) {
+      filteredOptions = cmd.options || [];
+    }
+
     return {
       name: cmd.name,
       description: cmd.description,
-      options: filteredOptions, // Include only subcommands and subcommand groups
+      options: filteredOptions, // Include options based on the query parameter
     };
   });
 
