@@ -61,6 +61,7 @@ export class WarnCommand {
       await interaction.reply({
         content: `${getEmojiString('check')} Successfully warned **<@${user.id}>** (ID: ${warnId}).`,
         flags: MessageFlags.Ephemeral,
+        allowedMentions: { users: [] }
       });
     } catch (error) {
       console.error("Error issuing warning:", error);
@@ -95,6 +96,7 @@ export class WarnCommand {
         await interaction.reply({
           content: `${getEmojiString('check')} **<@${user.id}>** has no warnings.`,
           flags: MessageFlags.Ephemeral,
+          allowedMentions: { users: [] }
         });
         return;
       }
@@ -104,6 +106,7 @@ export class WarnCommand {
       await interaction.reply({
         content: `Warnings for **<@${user.id}>**:\n\n${warnList}`,
         flags: MessageFlags.Ephemeral,
+        allowedMentions: { users: [] }
       });
     } catch (error) {
       console.error("Error fetching warnings:", error);
@@ -154,6 +157,7 @@ export class WarnCommand {
         await interaction.reply({
           content: `${getEmojiString('cross')} Warning ID **${warnId}** not found for <@${user.id}>.`,
           flags: MessageFlags.Ephemeral,
+          allowedMentions: { users: [] }
         });
         return;
       }
@@ -161,6 +165,7 @@ export class WarnCommand {
       await interaction.reply({
         content: `${getEmojiString('check')} Removed warning **${warnId}** for <@${user.id}>.`,
         flags: MessageFlags.Ephemeral,
+        allowedMentions: { users: [] }
       });
     } catch (error) {
       console.error("Error removing warning:", error);

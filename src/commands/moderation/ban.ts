@@ -57,6 +57,7 @@ export class BanCommand {
       await interaction.reply({
         content: `${getEmojiString('check')} <@${user.id}> has been banned from the server.`,
         flags: MessageFlags.Ephemeral,
+        allowedMentions: { users: [] }
       });
     } catch (error) {
       console.error("Error banning user:", error);
