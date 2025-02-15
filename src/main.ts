@@ -19,6 +19,9 @@ export const bot = new Client({
     IntentsBitField.Flags.MessageContent,
   ],
   silent: false,
+  allowedMentions: {
+    users: []
+  }
 });
 
 // Express server setup

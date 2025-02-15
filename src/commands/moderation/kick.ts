@@ -59,7 +59,6 @@ export class KickCommand {
       await interaction.reply({
         content: `${getEmojiString('check')} <@${user.id}> has been kicked from the server.`,
         flags: MessageFlags.Ephemeral,
-        allowedMentions: { users: [] }
       });
     } catch (error) {
       console.error("Error kicking user:", error);

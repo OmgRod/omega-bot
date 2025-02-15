@@ -68,7 +68,10 @@ export class TimerCommand {
       // Set a timeout to send the reminder after the specified time
       setTimeout(async () => {
         if (interaction.channel instanceof TextChannel) {
-          await interaction.channel.send(`<@${userToRemind.id}> Reminder (ID: ${id}): ${reminderText}`);
+          await interaction.channel.send({
+            content: `<@${userToRemind.id}> Reminder (ID: ${id}): ${reminderText}`,
+            allowedMentions: { users: [userToRemind.id] }
+          });        
         } else {
           console.error("Channel is not a TextChannel or is unavailable.");
         }
