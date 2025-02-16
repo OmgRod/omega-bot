@@ -1,11 +1,23 @@
 import { Discord, Slash, SlashGroup, SlashOption, ButtonComponent, ModalComponent } from "discordx";
 import { CommandInteraction, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Interaction, MessageComponentInteraction, ModalSubmitInteraction, MessageFlags, ApplicationCommandType, ApplicationCommandOptionType, PermissionFlagsBits } from "discord.js";
 import fs from "fs";
+import csv from "csv-parser"; // Import csv-parser for parsing the CSV file
 import { getEmojiString } from "../modules/emojis.js"; // Assuming this exists in both files
 import { pgClient } from "../pgClient.js"; // Ensure this is imported correctly
 
-// Load words from JSON file
-const words: string[] = JSON.parse(fs.readFileSync("res/wordle.json", "utf-8"));
+// Load words from CSV file
+const words: string[] = [];
+
+fs.createReadStream("res/wordle.csv")
+  .pipe(csv())
+  .on("data", (row) => {
+    if (row.words) {
+      words.push(row.words.toLowerCase()); // Add word to the array, ensuring it's in lowercase
+    }
+  })
+  .on("end", () => {
+    console.log(`Loaded ${words.length} words from wordle.csv`);
+  });
 
 @Discord()
 @SlashGroup({ name: "game", description: "Game-related commands" })
