@@ -16,3 +16,12 @@ CREATE TABLE warnings (
   reason TEXT NOT NULL,
   date TIMESTAMP DEFAULT NOW()
 );
+
+-- CREATE TABLE wordle_games (
+--     user_id TEXT NOT NULL,
+--     word TEXT NOT NULL,
+--     guesses TEXT DEFAULT '[]',
+--     max_guesses INT NOT NULL DEFAULT 6,
+--     started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     PRIMARY KEY (user_id)
+-- );

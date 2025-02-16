@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder } from "discord.js";
+import { CommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 import { Discord, Slash } from "discordx";
 import axios from "axios";
 
@@ -34,6 +34,6 @@ export class HelpCommand {
       .setColor("Blue")
       .setFooter({ text: "Omega Bot - Your AI Assistant" });
 
-    await interaction.reply({ embeds: [embed], ephemeral: true });
+    await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
   }
 }

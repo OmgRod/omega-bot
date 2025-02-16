@@ -75,7 +75,7 @@ export class WordleCommand {
     @ButtonComponent({ id: /^wordle_guess_\d+$/ })
     async guessButton(interaction: MessageComponentInteraction) {
         if (!this.activeGames.has(interaction.user.id)) {
-            return interaction.reply({ content: "❌ No active Wordle game found. Start one with `/game wordle`.", ephemeral: true });
+            return interaction.reply({ content: "❌ No active Wordle game found. Start one with `/game wordle`.", flags: MessageFlags.Ephemeral});
         }
 
         const modal = new ModalBuilder()

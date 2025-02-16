@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder } from "discord.js";
+import { CommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 import { Discord, Slash } from "discordx";
 
 @Discord()
@@ -22,6 +22,6 @@ export class HelpCommand {
       )
       .setFooter({ text: "Omega Bot - Your AI Assistant" });
 
-    await interaction.reply({ embeds: [embed], ephemeral: true });
+    await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
   }
 }
