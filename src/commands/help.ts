@@ -1,6 +1,9 @@
 import { CommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 import { Discord, Slash } from "discordx";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 @Discord()
 export class HelpCommand {
@@ -9,7 +12,8 @@ export class HelpCommand {
     let commandList = "Failed to fetch commands.";
 
     try {
-      const res = await axios.get("http://localhost:3001/commands");
+      const PORT = process.env.PORT || 3001;
+      const res = await axios.get(`http://localhost:${PORT}/commands`);
       const commands = res.data;
 
       commandList = commands
