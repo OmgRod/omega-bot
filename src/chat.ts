@@ -56,21 +56,21 @@ export class ChatListener {
                     } catch (editError: any) {
                         // Handle case where message was deleted while processing
                         if (editError.code === 10008) { // Unknown Message error code
-                            console.log("⚠️ Message was deleted while processing AI response");
+                            console.log("Message was deleted while processing AI response");
                         } else {
-                            console.error("❌ Error editing message:", editError);
+                            console.error("Error editing message:", editError);
                         }
                     }
                 } catch (error) {
-                    console.error("❌ Error interacting with Ollama:", error);
+                    console.error("Error interacting with Ollama:", error);
                     try {
                         await thinkingMessage.edit(`${getEmojiString("cross")} **Error:** Sorry, I couldn't process your message right now.`);
                     } catch (editError: any) {
                         // Handle case where message was deleted while processing
                         if (editError.code === 10008) { // Unknown Message error code
-                            console.log("⚠️ Message was deleted while processing AI error response");
+                            console.log("Message was deleted while processing AI error response");
                         } else {
-                            console.error("❌ Error editing message with error:", editError);
+                            console.error("Error editing message with error:", editError);
                         }
                     }
                 }
