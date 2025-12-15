@@ -32,7 +32,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/ms": "^2.1.0",
-    "@types/node": "^24.0.2",
+    "@types/node": "^25.0.2",
     "@types/pg": "^8.11.11",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
